@@ -42,12 +42,12 @@
               vrf-unicast:
                 vrf-prefixes:
                   vrf-prefix:
-                    - prefix: "1.2.3.6"
+                    - prefix: 1.2.3.6
                       prefix-length: 32
                       vrf-route:
                         vrf-next-hop-table:
                           vrf-next-hop-next-hop-address:
-                            - next-hop-address: "10.0.2.2"
+                            - next-hop-address: 10.0.2.2
 
     state: merged
 
@@ -68,8 +68,8 @@
     ansible_grpc_connection_type: cisco.iosxr.grpc
     ansible_port: 57777
   ansible.netcommon.grpc_get:
-    command: "show running-config"
-    display: "text"
+    command: show running-config
+    display: text
 
 - assert:
     that:
@@ -97,8 +97,8 @@
     ansible_grpc_connection_type: cisco.iosxr.grpc
     ansible_port: 57777
   ansible.netcommon.grpc_get:
-    command: "show running-config router bgp"
-    display: "text"
+    command: show running-config router bgp
+    display: text
 
 - assert:
     that:
@@ -125,8 +125,8 @@
     ansible_grpc_connection_type: cisco.iosxr.grpc
     ansible_port: 57777
   ansible.netcommon.grpc_get:
-    command: "show running-config router bgp"
-    display: "text"
+    command: show running-config router bgp
+    display: text
 
 - assert:
     that:

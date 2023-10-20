@@ -1,7 +1,7 @@
 ---
 - name: Start tasks
   ansible.builtin.debug:
-    msg: "START prepare_junos_tests/main.yaml"
+    msg: START prepare_junos_tests/main.yaml
 
 - name: Ensure netconf is enabled
   connection: ansible.netcommon.network_cli
