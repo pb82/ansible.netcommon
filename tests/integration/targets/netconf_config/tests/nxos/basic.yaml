@@ -8,7 +8,7 @@
   ignore_errors: true
   when: not result.failed
 
-- include_vars: "fixtures/config.yaml"
+- include_vars: fixtures/config.yaml
 
 - block:
     - name: Configure vlan
@@ -19,17 +19,17 @@
         content: "{{ vlan_config }}"
       register: result
 
-    - assert: &true
+    - assert:
         that:
-          - "result.changed == true"
+          - result.changed == true
 
     - name: Configure vlan - idempotence check
       ansible.netcommon.netconf_config: *config_vlan
       register: result
 
-    - assert: &false
+    - assert:
         that:
-          - "result.changed == false"
+          - result.changed == false
 
     - name: Query Running Config
       ansible.netcommon.netconf_get:

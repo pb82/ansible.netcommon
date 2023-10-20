@@ -18,8 +18,8 @@
     ansible_grpc_connection_type: cisco.iosxr.grpc
     ansible_port: 57777
   ansible.netcommon.grpc_get:
-    command: "show running-config"
-    display: "text"
+    command: show running-config
+    display: text
 
 - assert:
     that:
@@ -34,12 +34,12 @@
   ansible.netcommon.grpc_get:
     section:
       Cisco-IOS-XR-ifmgr-cfg:interface-configurations:
-        - null
+        -
 
 - name: Assert interface config
   assert:
     that:
-      - "item['description'] == 'this is test interface Loopback999'"
+      - item['description'] == 'this is test interface Loopback999'
   loop: "{{ result.output[0]['Cisco-IOS-XR-ifmgr-cfg:interface-configurations']['interface-configuration'] }}"
   when: item['interface-name'] == "Loopback999"
 
@@ -53,5 +53,4 @@
       - interface Loopback999
     match: none
 
-- debug: msg="END grpc_get iosxr/basic.yaml on connection={{ ansible_connection
-    }}"
+- debug: msg="END grpc_get iosxr/basic.yaml on connection={{ ansible_connection }}"

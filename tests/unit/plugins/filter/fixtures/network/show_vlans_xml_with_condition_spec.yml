@@ -18,5 +18,5 @@ keys:
       name: name
       desc: description
       intf: interface/name
-      state: ".[@inactive='inactive']"
+      state: .[@inactive='inactive']
     when: item.name == 'test-5'

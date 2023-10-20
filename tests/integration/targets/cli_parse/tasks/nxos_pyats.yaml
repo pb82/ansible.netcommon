@@ -1,6 +1,6 @@
 ---
 - name: Determine the python version of the control node
-  ansible.builtin.command: "python --version"
+  ansible.builtin.command: python --version
   delegate_to: localhost
   register: pyver
   changed_when: false
@@ -16,14 +16,14 @@
 - name: Only run pyats tests when control node is Python3
   when: pyver_found == '3'
   block:
-    - name: "Run command and parse with {{ parser }}"
+    - name: Run command and parse with {{ parser }}
       ansible.utils.cli_parse:
-        command: "show interface"
+        command: show interface
         parser:
           name: ansible.netcommon.pyats
       register: nxos_pyats_command
 
-    - name: "Pass text and command to {{ parser }}"
+    - name: Pass text and command to {{ parser }}
       ansible.utils.cli_parse:
         text: "{{ nxos_pyats_command['stdout'] }}"
         parser:
@@ -31,7 +31,7 @@
           command: show interface
       register: nxos_pyats_text
 
-    - name: "Check output"
+    - name: Check output
       ansible.builtin.assert:
         that: "{{ item }}"
       with_items:
@@ -40,7 +40,7 @@
         - "{{ nxos_pyats_command['parsed'] == nxos_pyats_text['parsed'] }}"
         - "{{ nxos_pyats_command['parsed']['mgmt0'] is defined }}"
 
-    - name: "Pass text, command, and os"
+    - name: Pass text, command, and os
       ansible.utils.cli_parse:
         text: "{{ nxos_pyats_command['stdout'] }}"
         parser:
@@ -49,7 +49,7 @@
           os: nxos
       register: nxos_pyats_text
 
-    - name: "Check output"
+    - name: Check output
       ansible.builtin.assert:
         that: "{{ item }}"
       with_items:
@@ -58,7 +58,7 @@
         - "{{ nxos_pyats_command['parsed'] == nxos_pyats_text['parsed'] }}"
         - "{{ nxos_pyats_command['parsed']['mgmt0'] is defined }}"
 
-    - name: "Confirm parser found message"
+    - name: Confirm parser found message
       ansible.utils.cli_parse:
         text: "{{ nxos_pyats_command['stdout'] }}"
         parser:
@@ -68,6 +68,6 @@
       register: nxos_pyats_invalid_parser_name
       ignore_errors: true
 
-    - name: "Check output"
+    - name: Check output
       ansible.builtin.assert:
         that: "{{ 'Could not find parser' in nxos_pyats_invalid_parser_name['msg'] }}"

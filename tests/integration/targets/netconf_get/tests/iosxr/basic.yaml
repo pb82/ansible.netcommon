@@ -1,7 +1,5 @@
 ---
-- debug:
-    msg="START netconf_get iosxr/basic.yaml on connection={{ ansible_connection
-    }}"
+- debug: msg="START netconf_get iosxr/basic.yaml on connection={{ ansible_connection }}"
 
 - name: setup interface
   connection: ansible.netcommon.network_cli
@@ -25,8 +23,7 @@
       - "'<description>this is test interface Loopback999</description>' in result.stdout"
       - "'<usernames>' not in result.stdout"
 
-- name: test lock=never, get-config, running interface confiugration with filter
-    without lock
+- name: test lock=never, get-config, running interface confiugration with filter without lock
   register: result
   connection: ansible.netcommon.netconf
   ansible.netcommon.netconf_get:
@@ -39,8 +36,7 @@
       - "'<description>this is test interface Loopback999</description>' in result.stdout"
       - "'<usernames>' not in result.stdout"
 
-- name: test lock=if-supported, get-config, running interface confiugration with
-    filter without lock
+- name: test lock=if-supported, get-config, running interface confiugration with filter without lock
   register: result
   connection: ansible.netcommon.netconf
   ansible.netcommon.netconf_get:
@@ -129,10 +125,9 @@
 
 - assert:
     that:
-      - "'filter value \\'configuration/state\\' of type xpath is not supported'\
-        \ in result.msg"
+      - "'filter value \\'configuration/state\\' of type xpath is not supported' in result.msg"
 
-- name: "get configuration with json filter and native output (using xmltodict)"
+- name: get configuration with json filter and native output (using xmltodict)
   connection: ansible.netcommon.netconf
   ansible.netcommon.netconf_get:
     filter: |
@@ -156,10 +151,10 @@
   set_fact:
     filter:
       interface-configurations:
-        "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg"
-        interface-configuration: null
+        "@xmlns": http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg
+        interface-configuration:
 
-- name: "get configuration with native filter type using set_facts"
+- name: get configuration with native filter type using set_facts
   connection: ansible.netcommon.netconf
   ansible.netcommon.netconf_get:
     filter: "{{ filter }}"
@@ -173,17 +168,10 @@
       - "{{ result['output']['data']['@xmlns:nc'] == 'urn:ietf:params:xml:ns:netconf:base:1.0' }}"
       - "{{ result['output']['data']['interface-configurations']['interface-configuration'] is defined }}"
 
-- name: "get configuration with direct native filter type"
+- name: get configuration with direct native filter type
   connection: ansible.netcommon.netconf
   ansible.netcommon.netconf_get:
-    filter:
-      {
-        "interface-configurations":
-          {
-            "@xmlns": "http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg",
-            "interface-configuration": null,
-          },
-      }
+    filter: { interface-configurations: { "@xmlns": http://cisco.com/ns/yang/Cisco-IOS-XR-ifmgr-cfg, interface-configuration: !!null "" } }
     display: native
   register: result
 
@@ -204,6 +192,4 @@
       - interface Loopback999
     match: none
 
-- debug:
-    msg="END netconf_get iosxr/basic.yaml on connection={{ ansible_connection
-    }}"
+- debug: msg="END netconf_get iosxr/basic.yaml on connection={{ ansible_connection }}"
